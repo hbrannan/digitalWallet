@@ -1,0 +1,43 @@
+.wallet__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
+  background: rgba(1, 0, 0, 0.5);
+}
+
+.wallet__container {
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 1em;
+  @media screen and (min-width: @tablet) {
+    width: 40%;
+  }
+}
+
+.wallet__header {
+  .flex-display(flex);
+  .justify-content(space-between);
+}
+
+.wallet__title {
+  text-align: center;
+  .flex-basis(90%);
+}
+
+
+.wallet__options-bar {
+  margin: 0.75em 0;
+  .font-size(14);
+  .flex-display(flex);
+  .justify-content(space-between);
+}
