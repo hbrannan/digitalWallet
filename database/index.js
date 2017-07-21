@@ -1,9 +1,10 @@
-console.log('loaded in db index')
 const Sequelize = require('sequelize');
-var DB_NAME = 'wallet_db';
-var DB_STORAGE = './database.sqlite';
+const DB_NAME = process.env.DB_NAME || 'wallet_db';
+const DB_STORAGE = process.env.DB_STORAGE || './database.sqlite';
+const DB_USER = process.env.DB_USER || 'usr';
+const DB_PWD = process.env.DB_PWD || 'pwd';
 
-const sequelize = new Sequelize(DB_NAME, 'usr', 'pwd', {
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PWD, {
   dialect: 'sqlite',
   host: 'localhost',
   storage: DB_STORAGE
@@ -57,7 +58,7 @@ const Card = sequelize.define('cards', {
 
 Card.belongsTo(User);
 
-//TODO: Purchase would likely contain additional fields, e.g., date, store, isCompleted,
+//TODO: Purchase could expand to contain additional useful fields, e.g., date, store, isCompleted,
 const Purchase = sequelize.define('purchases', {
   id: {
     type: Sequelize.INTEGER,
@@ -72,14 +73,6 @@ const Purchase = sequelize.define('purchases', {
 Purchase.belongsTo(Card);
 
 sequelize.sync();
-
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
 
 module.exports = {
   User: User,

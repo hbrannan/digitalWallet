@@ -1,4 +1,3 @@
-// const path = require('path');
 const bodyParser = require('body-parser');
 const allowCrossDomain = (req, res, next) => {
   res.header('access-control-allow-origin', '*');

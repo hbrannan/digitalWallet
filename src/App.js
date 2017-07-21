@@ -8,6 +8,9 @@ import WalletPanel from './containers/WalletPanel';
 
 
 class App extends Component {
+  componentDidMount() {
+    //TODO: API call to get initial state
+  }
   render() {
     return (
       <div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PaymentMethodsList from '../containers/PaymentMethodsList';
+import CardForm from '../containers/CardForm';
 import { connect } from 'react-redux';
 import { changeToAddScreen, changeToMainManageScreen, toggleWalletClosed, changeToMainScreen } from '../actions';
 
@@ -29,9 +30,12 @@ class WalletContent extends Component {
       );
     } else if (walletScreen === 'add') {
       return (
-        <div className="wallet__header">
-          <span onClick={this.props.onBackToMainClick}> ◀ </span>
-          <span className="wallet__title">Add Debit or Credit Card</span>
+        <div>
+          <div className="wallet__header">
+            <span onClick={this.props.onBackToMainClick}> ◀ </span>
+            <span className="wallet__title">Add Debit or Credit Card</span>
+          </div>
+          <CardForm buttonText="Add Card"/>
         </div>
       );
     } else if (walletScreen === 'manage-main') {

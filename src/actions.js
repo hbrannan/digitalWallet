@@ -1,3 +1,21 @@
+/* ACTIONS TOC
+  Wallet
+   - Open
+   - Close
+  Wallet Screens
+   - ToMain
+   - ToMainManagement
+   - TODO: ToManagementForm
+   - ToAddCard
+  Payment Method Options
+   - Add Payment
+   - Delete Payment
+   - Update Payment
+  Helpers:
+   - accountIsValid
+   - sendStorageError
+*/
+
 export function toggleWalletOpen () {
   return { type: 'TOGGLE_WALLET_OPEN' };
 }
@@ -14,29 +32,46 @@ export function changeToMainManageScreen () {
   return { type: 'TO_MAIN_MANAGE' };
 }
 
+export function changeToManageFormScreen () {
+  return { type: 'TO_MAIN_MANAGE' };
+}
+
 export function changeToAddScreen () {
   return { type: 'TO_ADD' };
 }
 
 export function updatePaymentChoice (cardId) {
-  console.log('update Payment', cardId)
   return { type: 'UPDATE_PAYMENT_CHOICE', cardId};
 }
 
 export function updatePaymentInfo (cardId) {
-  console.log('update info', cardId)
+  //TODO: API CALL
   return { type: 'UPDATE_PAYMENT_INFO', cardId};
 }
 
 export function deletePaymentMethod (cardId) {
-  console.log('delete info', cardId)
+  //TODO: API CALL
   return { type: 'DELETE_PAYMENT_METHOD', cardId};
 }
 
 export function submitForm (formData) {
-  console.log('form submit')
-  return { type: 'SUBMIT_FORM', formData: formData };
+  if (accountIsValid(formData)){
+    //TODO: API CALL TO NODE/ EXPRESS
+    return { type: 'SUBMIT_FORM', formData: formData };
+  } else {
+    return { type: 'ACCOUNT_VALIDATION_ERROR'}
+  }
 }
+
+function accountIsValid (formData) {
+  //TODO: external API CALL for validation (e.g. to bank)
+  return true;
+}
+
+function sendStorageError (errorMessage) {
+  return { type: 'STORAGE_ERROR', errorMessage };
+}
+
 
 /*
 ACTIONS TODO: form sending message

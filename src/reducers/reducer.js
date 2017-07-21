@@ -10,7 +10,7 @@ const defaultState = {
   ],
   currency_symbol: '$',
   wallet_open: true,
-  wallet_screen: 'main'
+  wallet_screen: 'add'
 };
 
 const appState = (state = defaultState, action) => {
