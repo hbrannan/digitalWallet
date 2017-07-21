@@ -39,15 +39,13 @@
      - PAYMENT_METHOD_MOD_SUCCESS
      - PAYMENT_METHOD_MOD_FAILURE
   - External API call (e.g. to banks) to validate accounts.
-  - support this call with actions:
+   - support this call with actions:
      - ACCOUNT_VALIDATION_IN_PROGRESS
      - ACCOUNT_VALIDATION_SUCCESS
      - ACCOUNT_VALIDATION_FAILURE
- - In src/reducer.js need:
-  - cases to handle above actions.
+ - In src/reducer.js need: cases to handle above actions.
 
- - In apiServer/controllers need:
-  - to fill out ea. fn to fulfill I/O described in comments.
+ - In apiServer/controllers need: to fill out ea. fn to fulfill I/O described in comments.
 
 # Setup:
 `yarn install`
