@@ -15,6 +15,9 @@
    - accountIsValid
    - sendStorageError
 */
+//const axios = require('axios');
+const port = process.env.PORT || 3000;
+const serverPath = `http://localhost:${port}`;
 
 export function toggleWalletOpen () {
   return { type: 'TOGGLE_WALLET_OPEN' };

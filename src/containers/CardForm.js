@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { submitForm } from '../actions';
 
+/*
+  Card Form
+*/
+
 class CardForm extends Component {
   constructor(props) {
     super(props);
