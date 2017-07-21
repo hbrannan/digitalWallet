@@ -26,7 +26,7 @@
    - routes.js (sends endpoint hits to controller handling)
    - controller.js (TODO: handles interfacing with DB, sends responses)
 
-#TODOS
+# TODOS
  - Create src/ManagementForm.js
  - In src/WalletContent, utilize ManagementForm
  - In src/CardForm.js need:
@@ -47,13 +47,16 @@
 
  - In apiServer/controllers need: to fill out ea. fn to fulfill I/O described in comments.
 
+ - In src/styles-global/app.less
+   - refactor wallet/ app / overlay so that app moves to left and can be fully seen.
+
 # Setup:
 `yarn install`
 `yarn start` runs front end on port 8080
 `yarn start--server` runs back end on port 3000
 
 
-# FOR DEVELOPMENT/ DUMMY DATA DB INITIALIZATION -- CLI -- (EARLY STAGE)
+# For development / Dummy Data DB initialization -- CLI -- (EARLY STAGE)
 insert into users values (1, 'steve', 'arch', 1, 1, 1);
 insert into users values (2, 'angie', 'bleck', 1, 1, 1);
 
