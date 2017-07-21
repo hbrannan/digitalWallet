@@ -1,12 +1,32 @@
 const Promise = require('bluebird');
+const db = require ('../database/index');
+
 module.exports = {
   //params: user_id (int)
   // -> user_name (STR), selected_card_id (INT), last_payment (INT), currency (STR)
   getWelcomeInfo: function (req, res) {
-    res.send('called getWelcomeInfo');
+    const userId = Number(req.query.userId);
+    return db.User.findOne({
+      where: {
+        id : userId
+      }
+    })
+    .then(user => {
+      let welcomeData;
+      if (user) {
+        welcomeData = {
+          first: user.firstName,
+          last: user.lastName,
+          lastCard: user.lastCard
+        };
+      }
+      res.send({welcomeData})
+    })
+    .catch(err => {console.log(err); res.send('getWelcomeFail', err)})
+
   },
   //params: user_id (int)
-  // -> Array of Objects {card_name, lastFour, lastPurchasAmount, currency}
+  // -> Array of Objects {card_name, lastFour, lastPurchaseAmount, currency}
   getAllCards: function (req, res) {
     res.send('called get all');
   },

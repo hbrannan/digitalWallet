@@ -1,3 +1,7 @@
+const axios = require('axios');
+const apiServerPort = process.env.API_SERVER_PORT || 3000;
+const serverPath = `http://localhost:${apiServerPort}`;
+
 /* ACTIONS TOC
   Wallet
    - Open
@@ -15,9 +19,23 @@
    - accountIsValid
    - sendStorageError
 */
-//const axios = require('axios');
-const port = process.env.PORT || 3000;
-const serverPath = `http://localhost:${port}`;
+
+export function fetchWelcomeInfo (userId) {
+  return dispatch => {
+    dispatch(requestingWelcomeInfo());
+
+    axios.get(`${serverPath}/users/welcome/?userId=${userId}`)
+      .then(response => {
+        console.log('succ', response.data.welcomeData)
+        const data = response.data.welcomeData;
+        return {type: 'WELCOME_INFO_FETCH_SUCCESS', data}
+      })
+      .catch(err => {
+        console.log(err);
+        return {type: 'WELCOME_INFO_FETCH_FAILURE', err}
+      })
+  }
+}
 
 export function toggleWalletOpen () {
   return { type: 'TOGGLE_WALLET_OPEN' };
@@ -65,6 +83,10 @@ export function submitForm (formData) {
     return { type: 'ACCOUNT_VALIDATION_ERROR'}
   }
 }
+
+function requestingWelcomeInfo () {
+  return { type: 'REQUESTING_WELCOME_INFO' };
+};
 
 function accountIsValid (formData) {
   //TODO: external API CALL for validation (e.g. to bank)

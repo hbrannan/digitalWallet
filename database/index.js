@@ -73,6 +73,7 @@ const Purchase = sequelize.define('purchases', {
 Purchase.belongsTo(Card);
 
 sequelize.sync();
+// sequelize.drop();
 
 module.exports = {
   User: User,
