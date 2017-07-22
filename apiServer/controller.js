@@ -33,7 +33,28 @@ module.exports = {
   //params: user_id (int, card info)
   // -> success (add card to methods) / error (display message)
   addNewCard: function (req, res) {
-    res.send('called add');
+    console.log('posted to add NewCard', req.body)
+    if (!req.body || !req.body.formData) {
+      res.status(400).send({msg: 'Post requires valid form data.'})
+    } else {
+      formData = req.body.formData;
+      db.Card.create({
+        cardName: formData.cardType,
+        lastFour: formData.cardNumber.slice(-4),
+        cardNumber: formData.cardNumber,
+        expirationDate: formData.expiration,
+        csc: formData.csc,
+        isActive: 1,
+        lastPurchase: null
+      })
+        .then(card => {
+          console.log(card);
+          return card;
+        })
+        .then(() => res.status(201).send({msg: 'Card created.'}))
+        .catch(err => res.status(500).send({msg: err}))
+
+    }
   },
   //params: user_id (int), card info
   // -> success (update card on methods, display msg) / error (display message)

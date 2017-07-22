@@ -9,8 +9,8 @@ const defaultState = {
     {card_name: 'AmEx', lastFour: '9837', lastPurchaseAmount: '5.50', currency:'USD'}
   ],
   currency_symbol: '$',
-  wallet_open: false,
-  wallet_screen: 'main'
+  wallet_open: true,
+  wallet_screen: 'add'
 };
 
 const appState = (state = defaultState, action) => {

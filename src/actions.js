@@ -28,7 +28,7 @@ export function fetchWelcomeInfo (userId) {
       .then(response => {
         console.log('succ', response.data.welcomeData)
         const data = response.data.welcomeData;
-        return {type: 'WELCOME_INFO_FETCH_SUCCESS', data}
+        return {type: 'WELCOME_INFO_FETCH_SUCCESS', data} //TODO: update name, lastCard, allCards in reducer
       })
       .catch(err => {
         console.log(err);
@@ -76,22 +76,42 @@ export function deletePaymentMethod (cardId) {
 }
 
 export function submitForm (formData) {
-  if (accountIsValid(formData)){
-    //TODO: API CALL TO NODE/ EXPRESS
-    return { type: 'SUBMIT_FORM', formData: formData };
-  } else {
-    return { type: 'ACCOUNT_VALIDATION_ERROR'}
+  return dispatch => {
+    //MVP: assume account is valid.
+    //TODO: make validation call to external API
+    dispatch(requestingPaymentMethodAdd());
+
+    axios.post(`${serverPath}/cards`, {
+      formData: formData
+    })
+      .then(response => {
+        console.log('succ', response)
+        const data = response.body
+        dispatch(addCardSuccess(data))
+      })
+      .catch(err => {
+        console.log('err', err);
+        dispatch(addCardFailure(err))
+      })
   }
 }
 
+function requestingPaymentMethodAdd () {
+  return { type: 'REQUESTING_PAYMENT_METHOD_ADD' };
+}
+
+function addCardSuccess (data) {
+  return { type: 'CARD_ADD_SUCCESS', data }
+}
+
+function addCardFailure (err) {
+  return {type: 'CARD_ADD_FAILURE', err}
+}
+
 function requestingWelcomeInfo () {
+  console.log('req made')
   return { type: 'REQUESTING_WELCOME_INFO' };
 };
-
-function accountIsValid (formData) {
-  //TODO: external API CALL for validation (e.g. to bank)
-  return true;
-}
 
 function sendStorageError (errorMessage) {
   return { type: 'STORAGE_ERROR', errorMessage };
