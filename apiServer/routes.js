@@ -7,7 +7,7 @@ module.exports = function (app, express) {
   app.post('/users/signin', (req, res) => res.send('Leave as TODO'));
 
   //get a sepcific users' welcome info (firstName, recentCard, recentPurchase)
-  app.get('/users/welcome', controller.getWelcomeInfo);
+  app.get('/users', controller.getWelcomeInfo);
 
   //get all of a users cards
   app.get('/cards', controller.getAllCards);

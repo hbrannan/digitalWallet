@@ -5,7 +5,7 @@ const allowCrossDomain = (req, res, next) => {
   res.header('access-control-allow-headers', 'Content-Type');
   res.header('Content-Type','application/json');
   if (req.method == 'OPTIONS') {
-    res.sendStatus(200)
+    res.status(200).send(200)
   } else {
     next();
   }
