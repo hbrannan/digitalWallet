@@ -52,23 +52,16 @@ module.exports = {
     } else {
       formData = req.body.formData;
 
-      db.User.findOne({
-        where: {
-          id: req.body.userId
-        }
-      }).then (currentUser => {
-          currentUser.createCard({
-            cardName: `${formData.cardType} ${formData.cardNumber.slice(-4)}`,
-            cardNumber: formData.cardNumber,
-            expirationDate: formData.expiration,
-            csc: formData.csc,
-            isActive: 1,
-            lastPurchase: null
-          })
-        })
+      db.Card.create({
+        cardName: `${formData.cardType} ${formData.cardNumber.slice(-4)}`,
+        cardNumber: formData.cardNumber,
+        expirationDate: formData.expiration,
+        csc: formData.csc,
+        isActive: 1,
+        lastPurchase: null
+      })
         .then(card => {
-          card.setUser(userId);
-          console.log(card.dataValues);
+          card.setUser(req.body.userId);
           return card;
         })
         .then(() => res.status(201).send({msg: 'Card created.'}))
