@@ -35,7 +35,7 @@ class WalletContent extends Component {
             <span onClick={this.props.onBackToMainClick}> ◀ </span>
             <span className="wallet__title">Add Debit or Credit Card</span>
           </div>
-          <CardForm buttonText="Add Card"/>
+          <CardForm variant="--add" buttonText="Add Card"/>
         </div>
       );
     } else if (walletScreen === 'manage-main') {

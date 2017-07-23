@@ -20,10 +20,10 @@ class CardForm extends Component {
     }
   }
 
-  componentWillMount() {
-    //TODO: consider starting timer and clearing sensitive form fields after
-    // period of inactivity.
-  }
+  // componentWillMount() {
+  //   //TODO: consider starting timer and clearing sensitive form fields after
+  //   // period of inactivity.
+  // }
 
   handleInputChange (val, key) {
     this.setState({[key]: val})
@@ -33,13 +33,14 @@ class CardForm extends Component {
   handleSubmit (e) {
     e.preventDefault();
     //TODO: validate entries/ selections
+    //TODO: separate out validation of very sensitive info & UI Info -- only card name
     this.props.onFormSubmit({
       name: `${this.state.firstName} ${this.state.lastName}`,
       cardType: this.state.cardType,
       cardNumber: this.state.cardNumber,
       expiration: this.state.expiration,
       csc: this.state.csc,
-    }, this.state.variant);
+    }, this.props.userId, this.state.variant);
   }
 
   render () {
@@ -61,7 +62,9 @@ class CardForm extends Component {
             />
           </div>
 
-          <select>
+          <select
+            onChange={(e)=>{this.handleInputChange(e.target.value, 'cardType')}}
+          >
             <option>MC</option>
             <option>VISA</option>
             <option>DISCOVER</option>
@@ -111,7 +114,7 @@ class CardForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  state
+  userId: state.user_id
 });
 
 const mapDispatchToProps = dispatch => {

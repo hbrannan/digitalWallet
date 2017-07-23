@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Icon from '../components/Icon';
+import { mapCurrencyToSymbol } from '../utils.js';
 
-let CartTotal = ({cartTotal, currencySymbol}) => {
+
+let CartTotal = ({cartTotal, cartCurrency}) => {
+  const currencySymbol = mapCurrencyToSymbol(cartCurrency);
   return (
     <div className="cart-total">
       <Icon variant="--small"/>
@@ -12,9 +15,9 @@ let CartTotal = ({cartTotal, currencySymbol}) => {
 }
 
 const mapStateToProps = state => ({
-  cartTotal: state.last_payment,
-  currencySymbol: state.currency_symbol
-})
+  cartTotal: state.cart_total,
+  cartCurrency: state.cart_currency
+});
 
 CartTotal = connect(mapStateToProps)(CartTotal);
 

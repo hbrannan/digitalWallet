@@ -21,6 +21,7 @@ const serverPath = `http://localhost:${apiServerPort}`;
 */
 
 export function fetchWelcomeInfo (userId) {
+
   return dispatch => {
     dispatch(requestingWelcomeInfo());
 
@@ -75,14 +76,16 @@ export function deletePaymentMethod (cardId) {
   return { type: 'DELETE_PAYMENT_METHOD', cardId};
 }
 
-export function submitForm (formData) {
+export function submitForm (formData, userId, addOrUpdate) {
+  console.log(userId, addOrUpdate)
   return dispatch => {
     //MVP: assume account is valid.
     //TODO: make validation call to external API
     dispatch(requestingPaymentMethodAdd());
 
     axios.post(`${serverPath}/cards`, {
-      formData: formData
+      formData: formData,
+      userId: userId
     })
       .then(response => {
         console.log('succ', response)

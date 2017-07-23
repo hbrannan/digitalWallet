@@ -53,10 +53,30 @@
 `yarn start--server` runs back end on port 3000
 
 
-# FOR DEVELOPMENT/ DUMMY DATA DB INITIALIZATION -- CLI -- (EARLY STAGE)
-insert into users values (1, 'steve', 'arch', 1, 1, 1);
-insert into users values (2, 'angie', 'bleck', 1, 1, 1);
+# FOR DEVELOPMENT/ DUMMY DATA DB INITIALIZATION --
 
-insert into cards values (1, 'amex', '1234', '111 111 111 111', '66', '341', 1, 1, '66', '66', 1)
-insert into cards values (2, 'visa', '1234', '111 111 111 111', '66', '341', 1, 1, '66', '66', 1)
-insert into cards values (3, 'mc', '1234', '111 111 111 111', '66', '341', 1, 1, '66', '66', 1)
+db.User.create({
+  firstName: 'steve',
+  firstName: 'stever',
+  lastCard: null
+})
+
+//accessible through UI interactions
+db.Card.create({
+  cardName: 'MC 2222',
+  cardNumber: '2345 2345 23 2222',
+  expirationDate: '11/22',
+  csc: '11/22',
+  isActive: 0 || 1.
+  lastPurchase:
+})
+.then(card => card.addUser(userId))
+
+db.Purchase.create({
+  amount: '22.95',
+  currency: 'USD'
+})
+.then(purchase => purchase.addCard(cardId))
+
+
+
