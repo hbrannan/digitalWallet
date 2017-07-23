@@ -1,3 +1,7 @@
+const axios = require('axios');
+const apiServerPort = process.env.API_SERVER_PORT || 3000;
+const serverPath = `http://localhost:${apiServerPort}`;
+
 /* ACTIONS TOC
   Wallet
    - Open
@@ -15,9 +19,24 @@
    - accountIsValid
    - sendStorageError
 */
-//const axios = require('axios');
-const port = process.env.PORT || 3000;
-const serverPath = `http://localhost:${port}`;
+
+export function fetchWelcomeInfo (userId) {
+
+  return dispatch => {
+    dispatch(requestingWelcomeInfo());
+
+    axios.get(`${serverPath}/users/welcome/?userId=${userId}`)
+      .then(response => {
+        console.log('succ', response.data.welcomeData)
+        const data = response.data.welcomeData;
+        return {type: 'WELCOME_INFO_FETCH_SUCCESS', data} //TODO: update name, lastCard, allCards in reducer
+      })
+      .catch(err => {
+        console.log(err);
+        return {type: 'WELCOME_INFO_FETCH_FAILURE', err}
+      })
+  }
+}
 
 export function toggleWalletOpen () {
   return { type: 'TOGGLE_WALLET_OPEN' };
@@ -57,19 +76,45 @@ export function deletePaymentMethod (cardId) {
   return { type: 'DELETE_PAYMENT_METHOD', cardId};
 }
 
-export function submitForm (formData) {
-  if (accountIsValid(formData)){
-    //TODO: API CALL TO NODE/ EXPRESS
-    return { type: 'SUBMIT_FORM', formData: formData };
-  } else {
-    return { type: 'ACCOUNT_VALIDATION_ERROR'}
+export function submitForm (formData, userId, addOrUpdate) {
+  console.log(userId, addOrUpdate)
+  return dispatch => {
+    //MVP: assume account is valid.
+    //TODO: make validation call to external API
+    dispatch(requestingPaymentMethodAdd());
+
+    axios.post(`${serverPath}/cards`, {
+      formData: formData,
+      userId: userId
+    })
+      .then(response => {
+        console.log('succ', response)
+        const data = response.body
+        dispatch(addCardSuccess(data))
+      })
+      .catch(err => {
+        console.log('err', err);
+        dispatch(addCardFailure(err))
+      })
   }
 }
 
-function accountIsValid (formData) {
-  //TODO: external API CALL for validation (e.g. to bank)
-  return true;
+function requestingPaymentMethodAdd () {
+  return { type: 'REQUESTING_PAYMENT_METHOD_ADD' };
 }
+
+function addCardSuccess (data) {
+  return { type: 'CARD_ADD_SUCCESS', data }
+}
+
+function addCardFailure (err) {
+  return {type: 'CARD_ADD_FAILURE', err}
+}
+
+function requestingWelcomeInfo () {
+  console.log('req made')
+  return { type: 'REQUESTING_WELCOME_INFO' };
+};
 
 function sendStorageError (errorMessage) {
   return { type: 'STORAGE_ERROR', errorMessage };

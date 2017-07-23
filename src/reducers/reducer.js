@@ -2,19 +2,25 @@ const defaultState = {
   user_id: 1,
   user_name: 'steve',
   selected_card_id: 1,
-  last_payment: 29.95,
+  cart_total: 24.95,
+  cart_currency: 'USD',
+  last_payment: {card_name: 'Master Card', lastFour: '1234', lastPurchaseAmount: '50.00', currency:'USD'},
   payment_methods: [
     {card_name: 'Master Card', lastFour: '1234', lastPurchaseAmount: '50.00', currency:'USD'},
     {card_name: 'Visa', lastFour: '4444', lastPurchaseAmount: '150.00', currency:'USD'},
     {card_name: 'AmEx', lastFour: '9837', lastPurchaseAmount: '5.50', currency:'USD'}
   ],
-  currency_symbol: '$',
   wallet_open: true,
   wallet_screen: 'add'
 };
 
 const appState = (state = defaultState, action) => {
   switch (action.type) {
+    //TODO
+    case 'WELCOME_INFO_FETCH_SUCCESS':
+      return {
+        ...state,
+      }
     case 'TOGGLE_WALLET_OPEN':
       return {
         ...state,

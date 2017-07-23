@@ -1,19 +1,76 @@
 const Promise = require('bluebird');
+const db = require ('../database/index');
+
+let currentUser;
+
 module.exports = {
-  //params: user_id (int)
-  // -> user_name (STR), selected_card_id (INT), last_payment (INT), currency (STR)
+
+  //On App load, retreive user information given param: userId (INT)
+  //--> user_name (STR), selected_card_id (INT), last_payment (INT), currency (STR)
   getWelcomeInfo: function (req, res) {
-    res.send('called getWelcomeInfo');
+  // FOR  D E V
+  //   db.User.create({
+  //   firstName: 'steve',
+  //   firstName: 'stever',
+  //   lastCard: null
+  // })
+    const userId = Number(req.query.userId);
+    return db.User.findOne({
+      where: {
+        id : userId
+      }
+    })
+    .then(user => {
+      currentUser = user;
+      let welcomeData;
+      if (user) {
+        welcomeData = {
+          first: user.firstName,
+          last: user.lastName,
+          lastCard: user.lastCard
+        };
+      }
+      res.send({welcomeData})
+    })
+    .catch(err => {console.log(err); res.send('getWelcomeFail', err)})
+
   },
-  //params: user_id (int)
-  // -> Array of Objects {card_name, lastFour, lastPurchasAmount, currency}
+
+  //On App load, given param: userId (INT)
+  //--> Array of Card Objects {card_name, lastFour, lastPurchaseAmount, currency}
   getAllCards: function (req, res) {
     res.send('called get all');
   },
-  //params: user_id (int, card info)
-  // -> success (add card to methods) / error (display message)
+
+  //On params: userId (INT), cardInfo (OBJ), and variant (STR)
+  //--> success: Add Card to User payment methods. Update User lastCard if !exists.
+  //--> error (display message)
   addNewCard: function (req, res) {
-    res.send('called add');
+    console.log('posted to add NewCard', req.body)
+    if (!req.body || !(req.body.formData && req.body.userId)) {
+      res.status(400).send({msg: 'Post requires valid form data & userId.'})
+    } else {
+      formData = req.body.formData;
+
+      db.Card.create({
+        cardName: `${formData.cardType} ${formData.cardNumber.slice(-4)}`,
+        cardNumber: formData.cardNumber,
+        expirationDate: formData.expiration,
+        csc: formData.csc,
+        isActive: 1,
+        lastPurchase: null
+      })
+        .then(card => {
+          card.setUser(req.body.userId);
+          return card;
+        })
+        .then(() => res.status(201).send({msg: 'Card created.'}))
+        .catch(err => {
+          console.log('c a r d   c r e a t e   e r r ', err)
+          res.status(500).send({msg: err})
+        })
+
+    }
   },
   //params: user_id (int), card info
   // -> success (update card on methods, display msg) / error (display message)

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleWalletClosed } from '../actions';
-import WalletContent from '../containers/WalletContent';
+import WalletContent from './WalletContent';
 
 class WalletPanel extends Component {
   constructor(props) {

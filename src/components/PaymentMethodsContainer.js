@@ -2,7 +2,7 @@ import React from 'react';
 import PaymentMethodsList from '../containers/PaymentMethodsList';
 import ChangeCardButton from '../containers/ChangeCardButton';
 
-const PaymentMethods = ({variant}) => {
+const PaymentMethodsContainer = ({variant}) => {
   return (
     <div className="payment-methods__container">
         <div className="payment-methods__header">
@@ -16,4 +16,4 @@ const PaymentMethods = ({variant}) => {
   );
 }
 
-export default PaymentMethods;
+export default PaymentMethodsContainer;

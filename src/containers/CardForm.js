@@ -10,29 +10,37 @@ class CardForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      variant: this.props.variant || '',
       firstName: '',
       lastName: '',
+      cardNumber: '',
       cardType: 'MC',
       expiration: '',
-      csc: '',
+      csc: ''
     }
   }
 
-  componentWillMount() {
-    //TODO: consider starting timer and clearing form after
-    // period of inactivity.
+  // componentWillMount() {
+  //   //TODO: consider starting timer and clearing sensitive form fields after
+  //   // period of inactivity.
+  // }
+
+  handleInputChange (val, key) {
+    this.setState({[key]: val})
   }
 
   //Prevent Default page reload. Dispatch formSubmit action with form data.
   handleSubmit (e) {
     e.preventDefault();
     //TODO: validate entries/ selections
+    //TODO: separate out validation of very sensitive info & UI Info -- only card name
     this.props.onFormSubmit({
       name: `${this.state.firstName} ${this.state.lastName}`,
       cardType: this.state.cardType,
+      cardNumber: this.state.cardNumber,
       expiration: this.state.expiration,
       csc: this.state.csc,
-    });
+    }, this.props.userId, this.state.variant);
   }
 
   render () {
@@ -42,27 +50,51 @@ class CardForm extends Component {
         <form onSubmit={this.handleSubmit.bind(this)}>
 
           <div className="form__inline-group">
-            <input placeholder="firstName" value={this.state.firstName}/>
-            <input placeholder="lastName" value={this.state.lastName}/>
+            <input
+              placeholder="firstName"
+              value={this.state.firstName}
+              onChange={(e)=>{this.handleInputChange.call(this, e.target.value, 'firstName')}}
+            />
+            <input
+              placeholder="lastName"
+              value={this.state.lastName}
+              onChange={ (e) => {this.handleInputChange.call(this, e.target.value, 'lastName')}}
+            />
           </div>
 
-          <select>
+          <select
+            onChange={(e)=>{this.handleInputChange(e.target.value, 'cardType')}}
+          >
             <option>MC</option>
             <option>VISA</option>
             <option>DISCOVER</option>
             <option>AMEX</option>
           </select>
 
-          <input placeholder="Card Number, e.g., 111 1111 111 111" />
+          <input
+            placeholder="Card Number, e.g., 111 1111 111 111"
+            value={this.state.cardNumber}
+            onChange={(e)=>{this.handleInputChange(e.target.value, 'cardNumber')}}
+          />
 
           <div className="form__inline-group">
             <div className="form__vertical-group">
               <label htmlFor="expiration">Expires</label>
-              <input id="expiration" placeholder="11/29" value={this.state.expiration}/>
+              <input
+                id="expiration"
+                placeholder="11/29"
+                value={this.state.expiration}
+                onChange={(e)=>{this.handleInputChange(e.target.value, 'expiration')}}
+              />
             </div>
             <div className="form__vertical-group">
               <label htmlFor="csc">CSC</label>
-              <input id="csc" placeholder="343" value={this.state.csc}/>
+              <input
+                id="csc"
+                placeholder="343"
+                value={this.state.csc}
+                onChange={(e)=>{this.handleInputChange(e.target.value, 'csc')}}
+              />
             </div>
           </div>
 
@@ -82,12 +114,12 @@ class CardForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  state
+  userId: state.user_id
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFormSubmit: (formData) => {dispatch(submitForm(formData))}
+    onFormSubmit: (formData, variant) => {dispatch(submitForm(formData, variant))}
   };
 }
 
