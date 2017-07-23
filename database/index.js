@@ -36,10 +36,13 @@ const Card = sequelize.define('cards', {
   cardName: {
     type: Sequelize.STRING
   },
+  lastFour: {
+    type: Sequelize.STRING
+  },
   cardNumber: {
     type: Sequelize.STRING
   },
-  expirationDate: {
+  dateValidThrough: {
     type: Sequelize.STRING
   },
   csc: {
@@ -48,7 +51,7 @@ const Card = sequelize.define('cards', {
   isActive: {
     type: Sequelize.BOOLEAN
   },
-  lastPurchaseMade: {
+  lastPurchase: {
     type: Sequelize.INTEGER
   }
 });
@@ -70,8 +73,6 @@ const Purchase = sequelize.define('purchases', {
 Purchase.belongsTo(Card);
 
 sequelize.sync();
-// sequelize.drop();
-
 
 module.exports = {
   User: User,
